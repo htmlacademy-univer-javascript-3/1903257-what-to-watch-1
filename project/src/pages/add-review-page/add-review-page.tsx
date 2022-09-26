@@ -53,7 +53,7 @@ export default function AddReviewPage() {
                   <a href="film-page.html" className="breadcrumbs__link">The Grand Budapest Hotel</a>
                 </li>
                 <li className="breadcrumbs__item">
-                  <a className="breadcrumbs__link">Add review</a>
+                  <a className="breadcrumbs__link" href="film-page.html">Add review</a>
                 </li>
               </ul>
             </nav>

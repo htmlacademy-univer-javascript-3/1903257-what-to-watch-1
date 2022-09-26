@@ -49,7 +49,7 @@ export default function MyList() {
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
+              <a className="user-block__link" href="film-page.html">Sign out</a>
             </li>
           </ul>
         </header>
