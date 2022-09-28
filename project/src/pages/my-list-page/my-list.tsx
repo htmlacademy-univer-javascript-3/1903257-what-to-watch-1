@@ -1,5 +1,5 @@
 
-export default function MyList() {
+export default function MyListPage() {
   return (
     <div className="container">
       <div className="visually-hidden">
