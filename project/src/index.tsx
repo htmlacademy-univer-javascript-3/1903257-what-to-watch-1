@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 
+import { MockFilms } from './mocks/films';
+import { MockFavouriteFilms } from './mocks/favourites';
+import { MockRecommended } from './mocks/recomended';
+
 const movie = {
   title: 'Grand Budapest',
   genre: 'Drama',
@@ -15,9 +19,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App
-      title={movie.title}
-      genre={movie.genre}
-      releaseDate={movie.releaseDate}
+      MainMovie={movie}
+      Films={MockFilms}
+      FavoriteFilms={MockFavouriteFilms}
+      RecommendedFilms={MockRecommended}
     />
   </React.StrictMode>,
 );
