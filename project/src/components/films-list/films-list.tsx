@@ -8,11 +8,10 @@ type FilmsListProps = {
 
 export default function FilmsList({ films }: FilmsListProps) {
 
-  const [activeCard, setActiveCard] = useState(0);
+  const [activeCard, setActiveCard] = useState(NaN);
 
   return (
     <div className="container">
-      {activeCard}
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
@@ -52,13 +51,14 @@ export default function FilmsList({ films }: FilmsListProps) {
         <div className="catalog__films-list">
           {films.map((film) => (
             <FilmCard
+              previewVideo={film.previewVideoLink}
               title={film.name}
               src={film.previewImage}
               id={film.id}
               key={film.id}
-              mouseOverHandler={(evt: React.MouseEvent<HTMLDivElement>) => {
-                evt.preventDefault();
-                setActiveCard(film.id);
+              isActive={activeCard === film.id}
+              changeParentState={(activeCardId: number) => {
+                setActiveCard(activeCardId);
               }}
             />
           ))}

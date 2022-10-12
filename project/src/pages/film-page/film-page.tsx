@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { Films } from '../../types/films';
 import { Recommended } from '../../types/recomended';
 import FilmCard from '../../components/film-card/film-card';
+import { useState } from 'react';
 
 type FilmPageProps = {
   films: Films,
@@ -11,6 +12,7 @@ type FilmPageProps = {
 export default function FilmPage({ films, recommended } : FilmPageProps) {
   const { id } = useParams();
   const currentFilm = films.find((film) => film.id === Number(id));
+  const [activeCard, setActiveCard] = useState(NaN);
   return (
     <div className="container">
       <section className="film-card film-card--full">
@@ -117,7 +119,19 @@ export default function FilmPage({ films, recommended } : FilmPageProps) {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            {recommended.map((film) => <FilmCard title={film.name} src={film.previewImage} id={ film.id } key={film.id}/>)}
+            {recommended.map((film) => (
+              <FilmCard
+                title={film.name}
+                src={film.previewImage}
+                id={film.id}
+                key={film.id}
+                isActive={activeCard === film.id}
+                previewVideo={film.previewVideoLink}
+                changeParentState={(activeCardId: number) => {
+                  setActiveCard(activeCardId);
+                }}
+              />
+            ))}
           </div>
         </section>
 

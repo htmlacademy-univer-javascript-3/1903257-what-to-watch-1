@@ -2,7 +2,7 @@ import MyListCard from '../../components/my-list-card/my-list-card';
 import { FavoriteFilms } from '../../types/favourite-film';
 
 type MyListPageProps = {
-  favoriteFilms : FavoriteFilms
+  favoriteFilms : FavoriteFilms,
 }
 
 export default function MyListPage({favoriteFilms} : MyListPageProps) {
