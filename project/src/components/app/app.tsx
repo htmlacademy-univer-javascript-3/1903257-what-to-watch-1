@@ -11,6 +11,7 @@ import { AuthInformation } from '../../const';
 import { Films } from '../../types/films';
 import { FavoriteFilms } from '../../types/favourite-film';
 import { Recommended } from '../../types/recomended';
+import { Comments } from '../../types/comments';
 
 type AppProps = {
   MainMovie: {
@@ -20,7 +21,8 @@ type AppProps = {
   },
   Films: Films,
   FavoriteFilms: FavoriteFilms,
-  RecommendedFilms : Recommended
+  RecommendedFilms: Recommended,
+  Reviews : Comments
 }
 
 
@@ -31,7 +33,7 @@ function App(MainMovieProps: AppProps): JSX.Element {
         <Route path='/' element={<MainPage movie={MainMovieProps.MainMovie} films={MainMovieProps.Films} />}></Route>
         <Route path='/login' element={<LoginPage></LoginPage>}></Route>
         <Route path='/mylist' element={<PrivateRoute isAuth={AuthInformation.Auth}><MyListPage favoriteFilms={MainMovieProps.FavoriteFilms}/></PrivateRoute>}></Route>
-        <Route path='/films/:id' element={<FilmPage films={MainMovieProps.Films} recommended={MainMovieProps.RecommendedFilms}></FilmPage>}></Route>
+        <Route path='/films/:id' element={<FilmPage films={MainMovieProps.Films} recommended={MainMovieProps.RecommendedFilms} reviews={MainMovieProps.Reviews}></FilmPage>}></Route>
         <Route path='/films/:id/review' element={<AddReviewPage films={MainMovieProps.Films}></AddReviewPage>}></Route>
         <Route path='/player/:id' element={<PlayerPage films={MainMovieProps.Films}></PlayerPage>}></Route>
         <Route path='*' element={<UnknownPage></UnknownPage>}></Route>

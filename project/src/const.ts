@@ -5,3 +5,9 @@ export enum AuthInformation {
 }
 
 export const FILM_CARD_PREVIEW_DELAY = 1000;
+
+export enum FilmTabsEnum {
+    Overview = 'Overview',
+    Details = 'Details',
+    Reviews = 'Reviews'
+}
