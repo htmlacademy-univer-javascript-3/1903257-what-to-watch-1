@@ -3,16 +3,26 @@ import { Films } from '../../types/films';
 import { Recommended } from '../../types/recomended';
 import FilmCard from '../../components/film-card/film-card';
 import { useState } from 'react';
+import FilmDescription from '../../components/film-description/film-description';
+import { Film } from '../../types/film';
+import { Comments } from '../../types/comments';
 
 type FilmPageProps = {
   films: Films,
-  recommended: Recommended
+  recommended: Recommended,
+  reviews: Comments
 }
 
-export default function FilmPage({ films, recommended } : FilmPageProps) {
+export default function FilmPage({ films, recommended, reviews } : FilmPageProps) {
   const { id } = useParams();
-  const currentFilm = films.find((film) => film.id === Number(id));
+  const currentFilm = films.find((film : Film) => film.id === Number(id));
   const [activeCard, setActiveCard] = useState(NaN);
+
+  if (!currentFilm) {
+    return (
+      <div>Фильм не найден</div>
+    );
+  }
   return (
     <div className="container">
       <section className="film-card film-card--full">
@@ -79,35 +89,10 @@ export default function FilmPage({ films, recommended } : FilmPageProps) {
             </div>
 
             <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="/" className="film-nav__link">Overview</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Details</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Reviews</a>
-                  </li>
-                </ul>
-              </nav>
-
-              <div className="film-rating">
-                <div className="film-rating__score">{ currentFilm?.rating }</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">Very good</span>
-                  <span className="film-rating__count">240 ratings</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{currentFilm?.description}</p>
-
-                <p className="film-card__director"><strong>Director: { currentFilm?.director }</strong></p>
-
-                <p className="film-card__starring"><strong>Starring: { currentFilm?.starring.map((el) => `${el }, `) }</strong></p>
-              </div>
+              <FilmDescription
+                currentFilm={currentFilm}
+                reviews={reviews}
+              />
             </div>
           </div>
         </div>
