@@ -30,7 +30,7 @@ function App(MainMovieProps: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<MainPage movie={MainMovieProps.MainMovie} films={MainMovieProps.Films} />}></Route>
+        <Route path='/' element={<MainPage movie={MainMovieProps.MainMovie}/>}></Route>
         <Route path='/login' element={<LoginPage></LoginPage>}></Route>
         <Route path='/mylist' element={<PrivateRoute isAuth={AuthInformation.Auth}><MyListPage favoriteFilms={MainMovieProps.FavoriteFilms}/></PrivateRoute>}></Route>
         <Route path='/films/:id' element={<FilmPage films={MainMovieProps.Films} recommended={MainMovieProps.RecommendedFilms} reviews={MainMovieProps.Reviews}></FilmPage>}></Route>
