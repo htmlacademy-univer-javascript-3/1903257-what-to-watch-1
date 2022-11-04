@@ -22,7 +22,10 @@ export const reducer = createReducer(initialState, (builder) => {
         8;
     })
     .addCase(increaseFilmsCount, (state, action) => {
-      state.filmsCount += 8;
+      
+      state.filmsCount = (state.filmsCount + 8) < state.filteredFilmsList.length ?
+      state.filmsCount + 8 :
+        state.filteredFilmsList.length;
     });
 
 });

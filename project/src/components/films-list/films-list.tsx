@@ -31,7 +31,7 @@ export default function FilmsList() {
           ))}
         </div>
 
-        <ShowMoreButton isAllFilmsLoaded={ filmsCount !== films.length } />
+        <ShowMoreButton isAllFilmsLoaded={ filmsCount !== films.length} />
       </section>
     </div>
   );
