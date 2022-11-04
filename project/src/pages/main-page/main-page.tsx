@@ -1,13 +1,11 @@
 import FilmsList from '../../components/films-list/films-list';
-import { Films } from '../../types/films';
 
 type MainPageProps = {
   movie: {
     title: string,
     genre: string,
     releaseDate: number
-  },
-  films: Films
+  }
 }
 
 export default function MainPage(props: MainPageProps) {
@@ -106,9 +104,7 @@ export default function MainPage(props: MainPageProps) {
 
       <div className="page-content">
 
-        <FilmsList
-          films={props.films}
-        />
+        <FilmsList/>
 
         <footer className="page-footer">
           <div className="logo">
