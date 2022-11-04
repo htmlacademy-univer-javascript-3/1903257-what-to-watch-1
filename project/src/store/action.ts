@@ -1,9 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 
 const changeGenre = createAction<{ currentGenre: string }>('main/changeGenre');
-const getFilms = createAction('main/getFilms');
+const increaseFilmsCount = createAction('main/increaseFilmsCount');
 
 export {
   changeGenre,
-  getFilms
+  increaseFilmsCount
 };
