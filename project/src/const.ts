@@ -1,4 +1,4 @@
-export enum AuthInformation {
+export enum AuthorizationStatus {
     Auth = 'AUTH',
     NoAuth = 'NO_AUTH',
     Unknown = 'UNKNOWN'
@@ -13,3 +13,11 @@ export enum FilmTabsEnum {
 }
 
 export const DEFAULT_GENRE = 'All genres';
+
+export enum APIRoute {
+    Films = '/films',
+    Login = '/login',
+    Logout = '/logout',
+}
+
+export const TIMEOUT_SHOW_ERROR = 5000;
