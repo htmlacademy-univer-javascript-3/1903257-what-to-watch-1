@@ -1,7 +1,7 @@
 import { MockFilms } from '../mocks/films';
 import { AuthorizationStatus, DEFAULT_GENRE } from '../const';
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, increaseFilmsCount, loadFilms, requireAuthorization, setDataLoadedStatus, setError } from './action';
+import { changeGenre, increaseFilmsCount, loadFilms, requireAuthorization, setDataLoadedStatus, setError, setAvatar } from './action';
 import { sortFilmsByGenre } from '../utils/sort-films';
 import { Films } from '../types/films';
 
@@ -12,7 +12,8 @@ type InitialState = {
   filmsCount: number,
   authorizationStatus: string,
   error: string | null,
-  isDataLoaded: boolean
+  isDataLoaded: boolean,
+  avatar: string | null
 }
 
 
@@ -23,7 +24,8 @@ const initialState: InitialState = {
   filmsCount: MockFilms.length < 8 ? MockFilms.length : 8,
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
-  isDataLoaded: false
+  isDataLoaded: false,
+  avatar: null
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -54,6 +56,9 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setDataLoadedStatus, (state, action) => {
       state.isDataLoaded = action.payload;
+    })
+    .addCase(setAvatar, (state, action) => {
+      state.avatar = action.payload;
     });
 
 });

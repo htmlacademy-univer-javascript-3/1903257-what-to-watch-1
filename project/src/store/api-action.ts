@@ -3,7 +3,7 @@ import { AppDispatch, State } from '../types/store';
 import { AxiosInstance } from 'axios';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { Films } from '../types/films';
-import { loadFilms, requireAuthorization, setError, setDataLoadedStatus } from './action';
+import { loadFilms, requireAuthorization, setError, setDataLoadedStatus, redirectToRoute, setAvatar } from './action';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { saveToken, dropToken } from '../components/services/token';
@@ -45,10 +45,12 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     extra: AxiosInstance
   }>(
     'user/login',
-    async ({login, password}, {dispatch, extra: api}) => {
-      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {login, password});
+    async ({email, password}, {dispatch, extra: api}) => {
+      const {data: {token, avatarUrl}} = await api.post<UserData>(APIRoute.Login, {email, password});
       saveToken(token);
+      dispatch(setAvatar(avatarUrl));
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(redirectToRoute('/'));
     },
   );
 
@@ -62,6 +64,8 @@ export const logoutAction = createAsyncThunk<void, undefined, {
       await api.delete(APIRoute.Logout);
       dropToken();
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      dispatch(setAvatar(null));
+      dispatch(redirectToRoute('/'));
     },
   );
 

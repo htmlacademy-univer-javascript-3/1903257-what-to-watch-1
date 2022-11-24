@@ -1,5 +1,5 @@
 import MainPage from '../../pages/main-page/main-page';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import UnknownPage from '../../pages/unknown-page/unknown-page';
 import LoginPage from '../../pages/login-page/login-page';
 import MyListPage from '../../pages/my-list-page/my-list';
@@ -14,6 +14,8 @@ import { Comments } from '../../types/comments';
 import { useAppSelector } from '../../hooks/state';
 import { isCheckedAuth } from '../../utils/check-auth';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 type AppProps = {
   MainMovie: {
@@ -37,7 +39,7 @@ function App(MainMovieProps: AppProps): JSX.Element {
     );
   }
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route path='/' element={<MainPage movie={MainMovieProps.MainMovie}/>}></Route>
         <Route path='/login' element={<LoginPage></LoginPage>}></Route>
@@ -47,7 +49,7 @@ function App(MainMovieProps: AppProps): JSX.Element {
         <Route path='/player/:id' element={<PlayerPage films={MainMovieProps.Films}></PlayerPage>}></Route>
         <Route path='*' element={<UnknownPage></UnknownPage>}></Route>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 
