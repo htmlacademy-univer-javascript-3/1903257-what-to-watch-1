@@ -2,23 +2,17 @@ import { useRef } from 'react';
 import { useAppDispatch } from '../../hooks/state';
 import { AuthData } from '../../types/auth-data';
 import { loginAction } from '../../store/api-action';
+import LogoButton from '../../components/logo-button/logo-button';
 export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
 
   const onSubmit = (data: AuthData) => {
     dispatch(loginAction(data));
   };
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
 
-  //   if (emailRef.current !== null && passRef.current !== null) {
-  //     onSubmit({ login: emailRef.current.value, password: passRef.current.value });
-  //   }
-  // };
   return (
     <div className="container">
       <div className="visually-hidden">
@@ -53,11 +47,7 @@ export default function LoginPage() {
       <div className="user-page">
         <header className="page-header user-page__head">
           <div className="logo">
-            <a href="main.html" className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
+            <LogoButton isLightVersion={false} />
           </div>
 
           <h1 className="page-title user-page__title">Sign in</h1>
@@ -97,7 +87,6 @@ export default function LoginPage() {
                     password: passRef.current.value,
                   });
                 }
-                //navigate('/');
               }}
               >Sign in
               </button>
@@ -106,13 +95,7 @@ export default function LoginPage() {
         </div>
 
         <footer className="page-footer">
-          <div className="logo">
-            <a href="main.html" className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <LogoButton isLightVersion />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>

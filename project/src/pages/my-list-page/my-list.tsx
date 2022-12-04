@@ -1,6 +1,7 @@
-import MyListCard from '../../components/my-list-card/my-list-card';
+import LogoButton from '../../components/logo-button/logo-button';
 import UserBlock from '../../components/user-block/user-block';
 import { FavoriteFilms } from '../../types/favourite-film';
+import RecommendedFilmCard from '../../components/recommended-film-card/recommended-film-card';
 
 type MyListPageProps = {
   favoriteFilms : FavoriteFilms,
@@ -40,13 +41,7 @@ export default function MyListPage({favoriteFilms} : MyListPageProps) {
 
       <div className="user-page">
         <header className="page-header user-page__head">
-          <div className="logo">
-            <a href="main.html" className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <LogoButton isLightVersion={false}/>
 
           <h1 className="page-title user-page__title">My list <span className="user-page__film-count">9</span></h1>
           <UserBlock />
@@ -56,18 +51,12 @@ export default function MyListPage({favoriteFilms} : MyListPageProps) {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
           <div className="catalog__films-list">
-            {favoriteFilms.map((film) => <MyListCard title={film.name} src={film.previewImage} key={film.id}></MyListCard>)}
+            {favoriteFilms.map((film) => <RecommendedFilmCard title={film.name} image={film.previewImage} key={film.id} id={film.id}></RecommendedFilmCard>)}
           </div>
         </section>
 
         <footer className="page-footer">
-          <div className="logo">
-            <a href="main.html" className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <LogoButton isLightVersion/>
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>

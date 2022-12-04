@@ -1,23 +1,36 @@
-import { useParams } from 'react-router-dom';
-import { Films } from '../../types/films';
-import { Recommended } from '../../types/recomended';
-import FilmCard from '../../components/film-card/film-card';
-import { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+
 import FilmDescription from '../../components/film-description/film-description';
-import { Film } from '../../types/film';
-import { Comments } from '../../types/comments';
 import UserBlock from '../../components/user-block/user-block';
+import LogoButton from '../../components/logo-button/logo-button';
+import RecommendedList from '../../components/recommended-list/recommended-list';
+import { useAppSelector, useAppDispatch } from '../../hooks/state';
+import { setDataLoadedStatus } from '../../store/action';
+import { useEffect } from 'react';
+import { fetchFilmByID, fetchCommentsByID, fetchRecommendedByID } from '../../store/api-action';
+import { AuthorizationStatus } from '../../const';
+import LoadingScreen from '../loading-screen/loading-screen';
 
-type FilmPageProps = {
-  films: Films,
-  recommended: Recommended,
-  reviews: Comments
-}
+export default function FilmPage() {
+  const id = Number(useParams().id);
+  const currentFilm = useAppSelector((state) => state.film);
+  const comments = useAppSelector((state) => state.comments);
+  const recommended = useAppSelector((state) => state.recommended);
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const loadStatus = useAppSelector((state) => state.isDataLoaded);
+  const dispatch = useAppDispatch();
 
-export default function FilmPage({ films, recommended, reviews } : FilmPageProps) {
-  const { id } = useParams();
-  const currentFilm = films.find((film : Film) => film.id === Number(id));
-  const [activeCard, setActiveCard] = useState(NaN);
+  useEffect(() => {
+    dispatch(setDataLoadedStatus(true));
+    dispatch(fetchFilmByID(id.toString()));
+    dispatch(fetchCommentsByID(id.toString()));
+    dispatch(fetchRecommendedByID(id.toString()));
+    dispatch(setDataLoadedStatus(false));
+  }, [id, dispatch]);
+
+  if (loadStatus) {
+    return(<LoadingScreen />);
+  }
 
   if (!currentFilm) {
     return (
@@ -35,13 +48,7 @@ export default function FilmPage({ films, recommended, reviews } : FilmPageProps
           <h1 className="visually-hidden">WTW</h1>
 
           <header className="page-header film-card__head">
-            <div className="logo">
-              <a href="main.html" className="logo__link">
-                <span className="logo__letter logo__letter--1">W</span>
-                <span className="logo__letter logo__letter--2">T</span>
-                <span className="logo__letter logo__letter--3">W</span>
-              </a>
-            </div>
+            <LogoButton isLightVersion={false} />
 
             <UserBlock />
           </header>
@@ -68,7 +75,8 @@ export default function FilmPage({ films, recommended, reviews } : FilmPageProps
                   <span>My list</span>
                   <span className="film-card__count">9</span>
                 </button>
-                <a href="add-review.html" className="btn film-card__button">Add review</a>
+                { authStatus === AuthorizationStatus.Auth &&
+                  <Link to={`/films/${id}/review`} className="btn film-card__button">Add review</Link>}
               </div>
             </div>
           </div>
@@ -83,7 +91,7 @@ export default function FilmPage({ films, recommended, reviews } : FilmPageProps
             <div className="film-card__desc">
               <FilmDescription
                 currentFilm={currentFilm}
-                reviews={reviews}
+                reviews={comments}
               />
             </div>
           </div>
@@ -92,34 +100,10 @@ export default function FilmPage({ films, recommended, reviews } : FilmPageProps
 
       <div className="page-content">
 
-        <section className="catalog catalog--like-this">
-          <h2 className="catalog__title">More like this</h2>
-
-          <div className="catalog__films-list">
-            {recommended.map((film) => (
-              <FilmCard
-                title={film.name}
-                src={film.previewImage}
-                id={film.id}
-                key={film.id}
-                isActive={activeCard === film.id}
-                previewVideo={film.previewVideoLink}
-                changeParentState={(activeCardId: number) => {
-                  setActiveCard(activeCardId);
-                }}
-              />
-            ))}
-          </div>
-        </section>
+        <RecommendedList recommended={recommended}/>
 
         <footer className="page-footer">
-          <div className="logo">
-            <a href="main.html" className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <LogoButton isLightVersion />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>

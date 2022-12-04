@@ -1,55 +1,67 @@
-import { Films } from '../../types/films';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import AddReview from '../../components/add-review/add-review';
+import LogoButton from '../../components/logo-button/logo-button';
 import UserBlock from '../../components/user-block/user-block';
-type AddReviewPageProps = {
-  films : Films
-}
-export default function AddReviewPage({ films }: AddReviewPageProps) {
-  const { id } = useParams();
-  const currentFilm = films.find((film) => film.id === Number(id));
+import { useAppDispatch, useAppSelector } from '../../hooks/state';
+import { setDataLoadedStatus } from '../../store/action';
+import { fetchFilmByID } from '../../store/api-action';
+import { useEffect } from 'react';
+import LoadingScreen from '../loading-screen/loading-screen';
+
+export default function AddReviewPage() {
+  const id = Number(useParams().id);
+
+  const film = useAppSelector((state) => state.film);
+  const loadStatus = useAppSelector((state) => state.isDataLoaded);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setDataLoadedStatus(true));
+    dispatch(fetchFilmByID(id.toString()));
+    dispatch(setDataLoadedStatus(false));
+  }, [id, dispatch]);
+
+
+  if (loadStatus) {
+    return(<LoadingScreen />);
+  }
+
   return (
-    <div className="container">
-
-      <section className="film-card film-card--full">
-        <div className="film-card__header">
-          <div className="film-card__bg">
-            <img src={currentFilm?.backgroundImage} alt={currentFilm?.name} />
-          </div>
-
-          <h1 className="visually-hidden">WTW</h1>
-
-          <header className="page-header">
-            <div className="logo">
-              <a href="main.html" className="logo__link">
-                <span className="logo__letter logo__letter--1">W</span>
-                <span className="logo__letter logo__letter--2">T</span>
-                <span className="logo__letter logo__letter--3">W</span>
-              </a>
-            </div>
-
-            <nav className="breadcrumbs">
-              <ul className="breadcrumbs__list">
-                <li className="breadcrumbs__item">
-                  <a href="film-page.html" className="breadcrumbs__link">{ currentFilm?.name }</a>
-                </li>
-                <li className="breadcrumbs__item">
-                  <a className="breadcrumbs__link" href="film-page.html">Add review</a>
-                </li>
-              </ul>
-            </nav>
-
-            <UserBlock />
-          </header>
-
-          <div className="film-card__poster film-card__poster--small">
-            <img src={currentFilm?.posterImage} alt={currentFilm?.name} width="218" height="327" />
-          </div>
+    <section className="film-card film-card--full">
+      <div className="film-card__header">
+        <div className="film-card__bg">
+          <img src={film?.backgroundImage} alt={film?.name}/>
         </div>
 
-        <AddReview></AddReview>
+        <h1 className="visually-hidden">WTW</h1>
 
-      </section>
-    </div>
+        <header className="page-header">
+          <LogoButton isLightVersion={ false } />
+
+          <nav className="breadcrumbs">
+            <ul className="breadcrumbs__list">
+              <li className="breadcrumbs__item">
+                <Link to={`/films/${id}`} className="breadcrumbs__link">{film?.name}</Link>
+              </li>
+              <li className="breadcrumbs__item">
+                <Link className="breadcrumbs__link" to={`/film/${id}/review`}>
+                  Add review
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          <UserBlock />
+        </header>
+
+        <div className="film-card__poster film-card__poster--small">
+          <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327"/>
+        </div>
+      </div>
+
+      <AddReview></AddReview>
+
+    </section>
   );
 }

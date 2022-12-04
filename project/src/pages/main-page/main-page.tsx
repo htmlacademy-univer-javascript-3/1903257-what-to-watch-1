@@ -1,4 +1,5 @@
 import FilmsList from '../../components/films-list/films-list';
+import LogoButton from '../../components/logo-button/logo-button';
 import UserBlock from '../../components/user-block/user-block';
 
 type MainPageProps = {
@@ -50,13 +51,7 @@ export default function MainPage(props: MainPageProps) {
         </div>
         <h1 className="visually-hidden">WTW</h1>
         <header className="page-header film-card__head">
-          <div className="logo">
-            <a className="logo__link" href="/">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <LogoButton isLightVersion={ false } />
 
           <UserBlock />
         </header>
@@ -99,13 +94,7 @@ export default function MainPage(props: MainPageProps) {
         <FilmsList/>
 
         <footer className="page-footer">
-          <div className="logo">
-            <a className="logo__link logo__link--light" href="/">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <LogoButton isLightVersion />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>

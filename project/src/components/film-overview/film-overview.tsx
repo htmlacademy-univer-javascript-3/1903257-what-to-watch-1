@@ -1,4 +1,5 @@
 import { Film } from '../../types/film';
+import convertRates from '../../utils/rating';
 type FilmOverviewProps = {
     currentFilm : Film
 }
@@ -8,8 +9,8 @@ export default function FilmOverview({currentFilm} : FilmOverviewProps) {
       <div className="film-rating">
         <div className="film-rating__score">{ currentFilm?.rating }</div>
         <p className="film-rating__meta">
-          <span className="film-rating__level">Very good</span>
-          <span className="film-rating__count">240 ratings</span>
+          <span className="film-rating__level">{convertRates(currentFilm.rating) }</span>
+          <span className="film-rating__count">{ currentFilm.scoresCount }</span>
         </p>
       </div>
 
