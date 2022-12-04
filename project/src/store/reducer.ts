@@ -1,9 +1,12 @@
 import { MockFilms } from '../mocks/films';
 import { AuthorizationStatus, DEFAULT_GENRE } from '../const';
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, increaseFilmsCount, loadFilms, requireAuthorization, setDataLoadedStatus, setError, setAvatar } from './action';
+import { changeGenre, increaseFilmsCount, loadFilms, requireAuthorization, setDataLoadedStatus, setError, setAvatar, resetMainScreen, loadFilm, loadComments, loadRecommended } from './action';
 import { sortFilmsByGenre } from '../utils/sort-films';
 import { Films } from '../types/films';
+import { Comments } from '../types/comments';
+import { Recommended } from '../types/recomended';
+import { Film } from '../types/film';
 
 type InitialState = {
   genre: string,
@@ -13,7 +16,10 @@ type InitialState = {
   authorizationStatus: string,
   error: string | null,
   isDataLoaded: boolean,
-  avatar: string | null
+  avatar: string | null,
+  comments: Comments,
+  recommended: Recommended,
+  film: Film | null
 }
 
 
@@ -25,7 +31,10 @@ const initialState: InitialState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
   isDataLoaded: false,
-  avatar: null
+  avatar: null,
+  comments: [],
+  recommended: [],
+  film: null
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -59,6 +68,19 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setAvatar, (state, action) => {
       state.avatar = action.payload;
+    })
+    .addCase(resetMainScreen, (state) => {
+      state.genre = DEFAULT_GENRE;
+      state.filteredFilmsList = state.filmsList;
+      state.filmsCount = state.filmsList.length < 8 ? state.filmsList.length : 8;
+    })
+    .addCase(loadFilm, (state, action) => {
+      state.film = action.payload;
+    })
+    .addCase(loadComments, (state, action) => {
+      state.comments = action.payload;
+    })
+    .addCase(loadRecommended, (state, action) => {
+      state.recommended = action.payload;
     });
-
 });

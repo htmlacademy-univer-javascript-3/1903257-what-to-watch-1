@@ -1,16 +1,9 @@
-import { useParams } from 'react-router-dom';
-import { Films } from '../../types/films';
 
-type PlayerPageProps = {
-  films : Films
-}
-export default function PlayerPage({films} : PlayerPageProps) {
-  const { id } = useParams();
-  const currentFilm = films.find((film) => film.id === Number(id));
+export default function PlayerPage() {
   return (
     <div className="container">
       <div className="player">
-        <video src={currentFilm?.videoLink} className="player__video" poster={currentFilm?.posterImage}></video>
+        <video src="#" className="player__video" poster="img/player-poster.jpg"></video>
 
         <button type="button" className="player__exit">Exit</button>
 
