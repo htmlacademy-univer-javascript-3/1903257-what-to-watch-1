@@ -12,6 +12,7 @@ export default function LoginPage() {
   const onSubmit = (data: AuthData) => {
     dispatch(loginAction(data));
   };
+  const checkPassword = (password: string): boolean => (/(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z]{2,}/.test(password));
 
   return (
     <div className="container">
@@ -81,7 +82,9 @@ export default function LoginPage() {
               <button className="sign-in__btn" type="submit" onClick={(evt) => {
                 evt.preventDefault();
 
-                if (emailRef.current !== null && passRef.current !== null) {
+                if (emailRef.current !== null
+                  && passRef.current !== null
+                  && checkPassword(passRef.current?.value)) {
                   onSubmit({
                     email: emailRef.current.value,
                     password: passRef.current.value,

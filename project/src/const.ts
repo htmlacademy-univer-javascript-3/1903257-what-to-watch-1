@@ -19,7 +19,8 @@ export enum APIRoute {
     Login = '/login',
     Logout = '/logout',
     Similar = '/similar',
-    Comments = '/comments'
+    Comments = '/comments',
+    Promo = '/promo'
 }
 
 export const TIMEOUT_SHOW_ERROR = 5000;

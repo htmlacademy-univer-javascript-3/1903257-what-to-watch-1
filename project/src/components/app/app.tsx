@@ -15,11 +15,6 @@ import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 
 type AppProps = {
-  MainMovie: {
-    title: string,
-    genre: string,
-    releaseDate: number
-  },
   FavoriteFilms: FavoriteFilms,
 }
 
@@ -35,7 +30,7 @@ function App(MainMovieProps: AppProps): JSX.Element {
   return (
     <HistoryRouter history={browserHistory}>
       <Routes>
-        <Route path='/' element={<MainPage movie={MainMovieProps.MainMovie}/>}></Route>
+        <Route path='/' element={<MainPage />}></Route>
         <Route path='/login' element={<LoginPage></LoginPage>}></Route>
         <Route path='/mylist' element={<PrivateRoute isAuth={authorizationStatus}><MyListPage favoriteFilms={MainMovieProps.FavoriteFilms}/></PrivateRoute>}></Route>
         <Route path='/films/:id' element={<FilmPage></FilmPage>}></Route>

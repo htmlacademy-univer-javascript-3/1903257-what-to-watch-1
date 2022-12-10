@@ -5,16 +5,14 @@ import { MockFavouriteFilms } from './mocks/favourites';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import ErrorMessage from './components/error-message/error-message';
-import { checkAuthAction, fetchFilmsAction } from './store/api-action';
+import { checkAuthAction, fetchFilmsAction, fetchPromoAction } from './store/api-action';
+import { setDataLoadedStatus } from './store/action';
 
-const movie = {
-  title: 'Grand Budapest',
-  genre: 'Drama',
-  releaseDate: 2014
-};
-
+store.dispatch(setDataLoadedStatus(true));
 store.dispatch(fetchFilmsAction());
+store.dispatch(fetchPromoAction());
 store.dispatch(checkAuthAction());
+store.dispatch(setDataLoadedStatus(false));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -25,7 +23,6 @@ root.render(
     <Provider store={store}>
       <ErrorMessage />
       <App
-        MainMovie={movie}
         FavoriteFilms={MockFavouriteFilms}
       />
     </Provider>
