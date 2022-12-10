@@ -13,6 +13,7 @@ import { isCheckedAuth } from '../../utils/check-auth';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 type AppProps = {
   FavoriteFilms: FavoriteFilms,
@@ -20,16 +21,70 @@ type AppProps = {
 
 
 function App(MainMovieProps: AppProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isDataLoaded = useAppSelector((state) => state.isDataLoaded);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  // const isDataLoaded = useAppSelector(getLoadedDataStatus);
 
-  if (isCheckedAuth(authorizationStatus) || isDataLoaded) {
+  if (isCheckedAuth(authorizationStatus)) {
     return (
       <LoadingScreen />
     );
   }
+
   return (
-    <HistoryRouter history={browserHistory}>
+    <>
+      {/*{isDataLoaded || <LoadingScreen /> }*/}
+      <HistoryRouter history={browserHistory}>
+        <Routes>
+          <Route
+            path="/"
+            element={<MainPage />}
+          />
+          <Route
+            path="/login"
+            element={<LoginPage />}
+          />
+          <Route
+            path="/mylist"
+            element={
+              <PrivateRoute isAuth={authorizationStatus}>
+                <MyListPage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/player/:id">
+            <Route
+              path={':id'}
+              element={<PlayerPage />}
+            />
+          </Route>
+          <Route path="/films/:id">
+            <Route
+              path={':id'}
+              element={<FilmPage />}
+            >
+            </Route>
+            <Route
+              path='/films/:id/review'
+              element={
+                <PrivateRoute isAuth={authorizationStatus}>
+                  <AddReviewPage />
+                </PrivateRoute>
+              }
+            >
+            </Route>
+          </Route>
+          <Route
+            path={'*'}
+            element={<UnknownPage />}
+          />
+        </Routes>
+      </HistoryRouter>
+    </>
+  );
+}
+
+export default App;
+{/* <HistoryRouter history={browserHistory}>
       <Routes>
         <Route path='/' element={<MainPage />}></Route>
         <Route path='/login' element={<LoginPage></LoginPage>}></Route>
@@ -39,8 +94,4 @@ function App(MainMovieProps: AppProps): JSX.Element {
         <Route path='/player/:id' element={<PlayerPage></PlayerPage>}></Route>
         <Route path='*' element={<UnknownPage></UnknownPage>}></Route>
       </Routes>
-    </HistoryRouter>
-  );
-}
-
-export default App;
+    </HistoryRouter> */}

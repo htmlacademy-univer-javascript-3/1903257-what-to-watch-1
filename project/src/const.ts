@@ -24,3 +24,9 @@ export enum APIRoute {
 }
 
 export const TIMEOUT_SHOW_ERROR = 5000;
+
+export enum NameSpace {
+    User = 'USER',
+    MainPage = 'MAIN',
+    FilmPage = 'FILM'
+}
