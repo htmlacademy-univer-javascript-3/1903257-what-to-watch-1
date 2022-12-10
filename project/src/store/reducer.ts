@@ -1,4 +1,3 @@
-import { MockFilms } from '../mocks/films';
 import { AuthorizationStatus, DEFAULT_GENRE } from '../const';
 import { createReducer } from '@reduxjs/toolkit';
 import { changeGenre, increaseFilmsCount, loadFilms, requireAuthorization, setDataLoadedStatus, setError, setAvatar, resetMainScreen, loadFilm, loadComments, loadRecommended, loadPromo, setFilmLoadedStatus, setFilmFoundStatus } from './action';
@@ -31,7 +30,7 @@ const initialState: InitialState = {
   genre: DEFAULT_GENRE,
   filmsList: [],
   filteredFilmsList: [],
-  filmsCount: MockFilms.length < 8 ? MockFilms.length : 8,
+  filmsCount: 8,
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
   isDataLoaded: false,
