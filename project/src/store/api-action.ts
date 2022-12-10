@@ -3,7 +3,7 @@ import { AppDispatch, State } from '../types/store';
 import { AxiosInstance } from 'axios';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { Films } from '../types/films';
-import { loadFilms, requireAuthorization, setError, setDataLoadedStatus, redirectToRoute, setAvatar, loadFilm, loadComments, loadRecommended, loadPromo } from './action';
+import { loadFilms, requireAuthorization, setError, setDataLoadedStatus, redirectToRoute, setAvatar, loadFilm, loadComments, loadRecommended, loadPromo, setFilmLoadedStatus, setFilmFoundStatus } from './action';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { saveToken, dropToken } from '../components/services/token';
@@ -22,9 +22,7 @@ export const fetchFilmsAction = createAsyncThunk<void, undefined, {
     'data/fetchFilms',
     async (_arg, {dispatch, extra: api}) => {
       const { data } = await api.get<Films>(APIRoute.Films);
-      //dispatch(setDataLoadedStatus(true));
       dispatch(loadFilms(data));
-      //dispatch(setDataLoadedStatus(false));
     },);
 
 export const fetchPromoAction = createAsyncThunk<void, undefined, {
@@ -102,8 +100,15 @@ export const fetchFilmByID = createAsyncThunk<void, string, {
 }>(
   'data/fetchFilmById',
   async (filmId: string, {dispatch, extra: api}) => {
-    const {data} = await api.get<Film>(`${APIRoute.Films}/${filmId}`);
-    dispatch(loadFilm(data));
+    try {
+      const {data} = await api.get<Film>(`${APIRoute.Films}/${filmId}`);
+      dispatch(loadFilm(data));
+      dispatch(setFilmLoadedStatus(true));
+      dispatch(setFilmFoundStatus(true));
+    } catch {
+      dispatch(setFilmLoadedStatus(true));
+      dispatch(setFilmFoundStatus(false));
+    }
   },
 );
 

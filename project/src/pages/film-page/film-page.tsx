@@ -17,7 +17,8 @@ export default function FilmPage() {
   const comments = useAppSelector((state) => state.comments);
   const recommended = useAppSelector((state) => state.recommended);
   const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const loadStatus = useAppSelector((state) => state.isDataLoaded);
+  const isFilmFoundStatus = useAppSelector((state) => state.isFilmFoundStatus);
+  const isFilmLoadedStatus = useAppSelector((state) => state.isFilmLoadedStatus);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -28,11 +29,11 @@ export default function FilmPage() {
     dispatch(setDataLoadedStatus(false));
   }, [id, dispatch]);
 
-  if (loadStatus) {
+  if (!isFilmLoadedStatus) {
     return(<LoadingScreen />);
   }
 
-  if (!currentFilm) {
+  if (!isFilmFoundStatus) {
     return (
       <div>Фильм не найден</div>
     );

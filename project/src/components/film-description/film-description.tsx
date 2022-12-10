@@ -9,11 +9,19 @@ import { Comments } from '../../types/comments';
 
 
 type FilmDescriptionProps = {
-    currentFilm: Film,
+    currentFilm: Film | null,
     reviews: Comments
 }
 export default function FilmDescription({currentFilm, reviews}: FilmDescriptionProps) {
   const [currentTab, setCurrentTab] = useState<string>(FilmTabsEnum.Overview);
+
+  if (!currentFilm) {
+    return (
+      <div className="film-card__desc">
+        NO FILMS
+      </div>
+    );
+  }
   return (
     <div className="container">
       <FilmTabs

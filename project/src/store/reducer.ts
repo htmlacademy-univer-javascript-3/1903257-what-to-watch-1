@@ -1,7 +1,7 @@
 import { MockFilms } from '../mocks/films';
 import { AuthorizationStatus, DEFAULT_GENRE } from '../const';
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, increaseFilmsCount, loadFilms, requireAuthorization, setDataLoadedStatus, setError, setAvatar, resetMainScreen, loadFilm, loadComments, loadRecommended, loadPromo } from './action';
+import { changeGenre, increaseFilmsCount, loadFilms, requireAuthorization, setDataLoadedStatus, setError, setAvatar, resetMainScreen, loadFilm, loadComments, loadRecommended, loadPromo, setFilmLoadedStatus, setFilmFoundStatus } from './action';
 import { sortFilmsByGenre } from '../utils/sort-films';
 import { Films } from '../types/films';
 import { Comments } from '../types/comments';
@@ -21,7 +21,9 @@ type InitialState = {
   comments: Comments,
   recommended: Recommended,
   film: Film | null,
-  promo: Promo | null
+  promo: Promo | null,
+  isFilmFoundStatus: boolean | null,
+  isFilmLoadedStatus: boolean | null
 }
 
 
@@ -37,7 +39,9 @@ const initialState: InitialState = {
   comments: [],
   recommended: [],
   film: null,
-  promo: null
+  promo: null,
+  isFilmFoundStatus: false,
+  isFilmLoadedStatus: false
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -88,5 +92,11 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadRecommended, (state, action) => {
       state.recommended = action.payload;
+    })
+    .addCase(setFilmLoadedStatus, (state, action) => {
+      state.isFilmLoadedStatus = action.payload;
+    })
+    .addCase(setFilmFoundStatus, (state, action) => {
+      state.isFilmFoundStatus = action.payload;
     });
 });

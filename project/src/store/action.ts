@@ -18,3 +18,5 @@ export const loadFilm = createAction<Film>('data/loadFilmById');
 export const loadComments = createAction<Comments>('data/loadCommentsById');
 export const loadRecommended = createAction<Recommended>('data/loadSimilarById');
 export const loadPromo = createAction<Promo>('data/loadPromo');
+export const setFilmFoundStatus = createAction<boolean>('film/setFilmFoundStatus');
+export const setFilmLoadedStatus = createAction<boolean>('film/setFilmLoadedStatus');
