@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import FilmCardPreview from '../film-card-preview/film-card-preview';
-import { resetMainScreen } from '../../store/action';
 import { useAppDispatch } from '../../hooks/state';
 import { useState } from 'react';
+import { resetMainScreen } from '../../store/main-data/main-data';
 
 type FilmCardProps = {
   title: string,

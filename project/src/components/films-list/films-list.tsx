@@ -2,10 +2,11 @@ import FilmCard from '../film-card/film-card';
 import GenresList from '../genres-list/genres-list';
 import { useAppSelector } from '../../hooks/state';
 import ShowMoreButton from '../show-more-button/show-more-button';
+import { getFilteredFilms, getCardCount } from '../../store/main-data/selectors';
 
 export default function FilmsList() {
-  const films = useAppSelector((state) => state.filteredFilmsList);
-  const filmsCount = useAppSelector((state) => state.filmsCount);
+  const films = useAppSelector(getFilteredFilms);
+  const filmsCount = useAppSelector(getCardCount);
   return (
     <div className="container">
       <section className="catalog">

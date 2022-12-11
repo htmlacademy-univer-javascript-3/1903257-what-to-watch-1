@@ -2,19 +2,16 @@ import FilmTabs from '../film-tabs/film-tabs';
 import { FilmTabsEnum } from '../../const';
 import { useState } from 'react';
 import FilmOverview from '../film-overview/film-overview';
-import { Film } from '../../types/film';
 import FilmDetails from '../film-details/film-details';
 import FilmReviews from '../film-reviews/film-reviews';
-import { Comments } from '../../types/comments';
+import { useAppSelector } from '../../hooks/state';
+import { getComments, getFilm } from '../../store/film-data/selectors';
 
 
-type FilmDescriptionProps = {
-    currentFilm: Film | null,
-    reviews: Comments
-}
-export default function FilmDescription({currentFilm, reviews}: FilmDescriptionProps) {
+export default function FilmDescription() {
   const [currentTab, setCurrentTab] = useState<string>(FilmTabsEnum.Overview);
-
+  const currentFilm = useAppSelector(getFilm);
+  const reviews = useAppSelector(getComments);
   if (!currentFilm) {
     return (
       <div className="film-card__desc">

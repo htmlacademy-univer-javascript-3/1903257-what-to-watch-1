@@ -2,11 +2,12 @@ import {Link} from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { logoutAction } from '../../store/api-action';
+import { getAuthorizationStatus, getAvatarUrl } from '../../store/user-data/selectors';
 
 function UserBlock(): JSX.Element {
   const dispatch = useAppDispatch();
-  const avatar = useAppSelector((state) => state.avatar);
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const avatar = useAppSelector(getAvatarUrl);
+  const authStatus = useAppSelector(getAuthorizationStatus);
 
   if (authStatus !== AuthorizationStatus.Auth) {
     return (

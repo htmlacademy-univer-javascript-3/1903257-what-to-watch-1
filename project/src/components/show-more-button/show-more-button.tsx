@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 import { useAppDispatch } from '../../hooks/state';
-import { increaseFilmsCount } from '../../store/action';
+import { increaseCardCount } from '../../store/main-data/main-data';
 
 type ShowMoreButtonProps = {
     isAllFilmsLoaded : boolean
@@ -10,7 +10,7 @@ export default function ShowMoreButton({ isAllFilmsLoaded }: ShowMoreButtonProps
   const dispatch = useAppDispatch();
   const handleClick = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.preventDefault();
-    dispatch(increaseFilmsCount());
+    dispatch(increaseCardCount());
 
   };
   return (

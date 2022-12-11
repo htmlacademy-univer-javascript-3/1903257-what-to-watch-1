@@ -1,9 +1,21 @@
+import { useEffect } from 'react';
 import FilmsList from '../../components/films-list/films-list';
 import LogoButton from '../../components/logo-button/logo-button';
 import PromoMovieCard from '../../components/promo-movie-card/promo-movie-card';
+import { AuthorizationStatus } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/state';
+import { getAuthorizationStatus } from '../../store/user-data/selectors';
 
 
 export default function MainPage() {
+  const dispatch = useAppDispatch();
+  const authStatus = useAppSelector(getAuthorizationStatus);
+
+  useEffect(() => {
+    if (authStatus === AuthorizationStatus.Auth) {
+      // dispatch(fetchFavoriteFilmsAction());
+    }
+  }, [authStatus, dispatch]);
   return (
     <div className="container">
       <div className="visually-hidden">

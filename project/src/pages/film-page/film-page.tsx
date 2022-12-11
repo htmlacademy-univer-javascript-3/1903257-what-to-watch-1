@@ -5,31 +5,29 @@ import UserBlock from '../../components/user-block/user-block';
 import LogoButton from '../../components/logo-button/logo-button';
 import RecommendedList from '../../components/recommended-list/recommended-list';
 import { useAppSelector, useAppDispatch } from '../../hooks/state';
-import { setDataLoadedStatus } from '../../store/action';
 import { useEffect } from 'react';
 import { fetchFilmByID, fetchCommentsByID, fetchRecommendedByID } from '../../store/api-action';
 import { AuthorizationStatus } from '../../const';
 import LoadingScreen from '../loading-screen/loading-screen';
+import { getFilm, getSimilar, getIsFilmFoundStatus, getIsFilmLoadingStatus } from '../../store/film-data/selectors';
+import { getAuthorizationStatus } from '../../store/user-data/selectors';
 
 export default function FilmPage() {
   const id = Number(useParams().id);
-  const currentFilm = useAppSelector((state) => state.film);
-  const comments = useAppSelector((state) => state.comments);
-  const recommended = useAppSelector((state) => state.recommended);
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const isFilmFoundStatus = useAppSelector((state) => state.isFilmFoundStatus);
-  const isFilmLoadedStatus = useAppSelector((state) => state.isFilmLoadedStatus);
+  const currentFilm = useAppSelector(getFilm);
+  const recommended = useAppSelector(getSimilar);
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  const isFilmFoundStatus = useAppSelector(getIsFilmFoundStatus);
+  const isFilmLoadedStatus = useAppSelector(getIsFilmLoadingStatus);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setDataLoadedStatus(true));
     dispatch(fetchFilmByID(id.toString()));
     dispatch(fetchCommentsByID(id.toString()));
     dispatch(fetchRecommendedByID(id.toString()));
-    dispatch(setDataLoadedStatus(false));
   }, [id, dispatch]);
 
-  if (!isFilmLoadedStatus) {
+  if (isFilmLoadedStatus) {
     return(<LoadingScreen />);
   }
 
@@ -90,10 +88,7 @@ export default function FilmPage() {
             </div>
 
             <div className="film-card__desc">
-              <FilmDescription
-                currentFilm={currentFilm}
-                reviews={comments}
-              />
+              <FilmDescription />
             </div>
           </div>
         </div>

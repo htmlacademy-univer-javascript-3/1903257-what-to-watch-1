@@ -1,5 +1,6 @@
 import { Films } from './films';
 import Promo from './promo';
+import { FavoriteFilms } from './favourite-film';
 
 export type MainData = {
     films: Films,
@@ -7,5 +8,6 @@ export type MainData = {
     isDataLoaded: boolean,
     currentGenre: string,
     filteredFilms: Films,
-    cardCount: number,
+  cardCount: number,
+    favoriteFilms: FavoriteFilms
   }

@@ -20,7 +20,7 @@ export default function FilmDetails({ currentFilm }: FilmDetailsProps) {
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Starring</strong>
           <span className="film-card__details-value">
-            {currentFilm.starring.map((el) => <>{el}<br/></> )}
+            {currentFilm.starring.map((el) => <span key={el}>{el}<br/></span> )}
           </span>
         </p>
       </div>

@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import { DEFAULT_GENRE, NameSpace} from '../../const';
 import { MainData } from '../../types/main-data';
 import { sortFilmsByGenre } from '../../utils/sort-films';
-import { fetchFilmsAction, fetchPromoAction } from '../api-action';
+import { fetchFavoriteFilmsAction, fetchFilmsAction, fetchPromoAction } from '../api-action';
 
 
 const initialState: MainData = {
@@ -11,7 +11,8 @@ const initialState: MainData = {
   isDataLoaded: false,
   currentGenre: DEFAULT_GENRE,
   filteredFilms: [],
-  cardCount: 0
+  cardCount: 0,
+  favoriteFilms: []
 };
 
 export const mainData = createSlice({
@@ -51,10 +52,21 @@ export const mainData = createSlice({
         state.isDataLoaded = true;
       })
       .addCase(fetchFilmsAction.fulfilled, (state, action) => {
-        state.films = action.payload;
+        const films = action.payload;
+
+        state.films = films;
+        state.filteredFilms = films;
+        state.cardCount = films.length < 8 ? films.length : 8;
+        state.isDataLoaded = false;
       })
       .addCase(fetchPromoAction.fulfilled, (state, action) => {
         state.promo = action.payload;
+      })
+      .addCase(fetchFavoriteFilmsAction.pending, (state) => {
+        state.isDataLoaded = true;
+      })
+      .addCase(fetchFavoriteFilmsAction.fulfilled, (state, action) => {
+        state.favoriteFilms = action.payload;
         state.isDataLoaded = false;
       });
   }

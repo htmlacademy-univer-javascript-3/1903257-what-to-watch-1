@@ -1,8 +1,8 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import { Comment } from '../../types/comment';
 import { postComment } from '../../store/api-action';
 import { useAppDispatch } from '../../hooks/state';
+import { UserComment } from '../../types/user-comment';
 
 export default function AddReview(): JSX.Element {
   const id = Number(useParams().id);
@@ -41,7 +41,7 @@ export default function AddReview(): JSX.Element {
     onSubmit({comment: formData.reviewText, rating: formData.rating, filmId: id.toString()});
   };
 
-  const onSubmit = (commentData: Comment) => {
+  const onSubmit = (commentData: UserComment) => {
     dispatch(postComment(commentData));
   };
 

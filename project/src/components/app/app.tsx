@@ -7,22 +7,17 @@ import FilmPage from '../../pages/film-page/film-page';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
 import PlayerPage from '../../pages/player-page/player-page';
 import PrivateRoute from '../private-route/private-route';
-import { FavoriteFilms } from '../../types/favourite-film';
 import { useAppSelector } from '../../hooks/state';
 import { isCheckedAuth } from '../../utils/check-auth';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
-import { getAuthorizationStatus } from '../../store/user-process/selectors';
-
-type AppProps = {
-  FavoriteFilms: FavoriteFilms,
-}
+import { getAuthorizationStatus } from '../../store/user-data/selectors';
 
 
-function App(MainMovieProps: AppProps): JSX.Element {
+function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  // const isDataLoaded = useAppSelector(getLoadedDataStatus);
+
 
   if (isCheckedAuth(authorizationStatus)) {
     return (
@@ -57,7 +52,7 @@ function App(MainMovieProps: AppProps): JSX.Element {
               element={<PlayerPage />}
             />
           </Route>
-          <Route path="/films/:id">
+          <Route path="/films/">
             <Route
               path={':id'}
               element={<FilmPage />}
@@ -84,14 +79,3 @@ function App(MainMovieProps: AppProps): JSX.Element {
 }
 
 export default App;
-{/* <HistoryRouter history={browserHistory}>
-      <Routes>
-        <Route path='/' element={<MainPage />}></Route>
-        <Route path='/login' element={<LoginPage></LoginPage>}></Route>
-        <Route path='/mylist' element={<PrivateRoute isAuth={authorizationStatus}><MyListPage favoriteFilms={MainMovieProps.FavoriteFilms}/></PrivateRoute>}></Route>
-        <Route path='/films/:id' element={<FilmPage></FilmPage>}></Route>
-        <Route path='/films/:id/review' element={<AddReviewPage></AddReviewPage>}></Route>
-        <Route path='/player/:id' element={<PlayerPage></PlayerPage>}></Route>
-        <Route path='*' element={<UnknownPage></UnknownPage>}></Route>
-      </Routes>
-    </HistoryRouter> */}
