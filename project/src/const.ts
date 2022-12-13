@@ -27,8 +27,8 @@ export enum APIRoute {
 export const TIMEOUT_SHOW_ERROR = 5000;
 
 export enum NameSpace {
-    User = 'USER',
-    MainPage = 'MAIN',
-    FilmPage = 'FILM',
-    App = 'APP'
+    User = 'user-data',
+    MainPage = 'main-data',
+    FilmPage = 'film-data',
+    App = 'app-data'
 }

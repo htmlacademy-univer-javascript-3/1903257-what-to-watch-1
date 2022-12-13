@@ -12,15 +12,15 @@ type FilmCardProps = {
 }
 
 export default function FilmCard({ title, src, id, previewVideo }: FilmCardProps): JSX.Element {
-  const [isPointed, setIsPointed] = useState(false);
+  const [isPointedFilm, setIsPointedFilm] = useState(false);
   const dispatch = useAppDispatch();
   return (
     <article className="small-film-card catalog__films-card"
-      onMouseEnter={() => setIsPointed(true)}
-      onMouseLeave={() => setIsPointed(false)}
+      onMouseEnter={() => setIsPointedFilm(true)}
+      onMouseLeave={() => setIsPointedFilm(false)}
     >
       <div className="small-film-card__image">
-        {isPointed ?
+        {isPointedFilm ?
           <FilmCardPreview poster={src} previewVideo={previewVideo} />
           : <img src={src} alt={ title } width="280" height="175"/>}
       </div>

@@ -15,7 +15,7 @@ import browserHistory from '../../browser-history';
 import { getAuthorizationStatus } from '../../store/user-data/selectors';
 
 
-function App(): JSX.Element {
+export default function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
 
@@ -26,56 +26,51 @@ function App(): JSX.Element {
   }
 
   return (
-    <>
-      {/*{isDataLoaded || <LoadingScreen /> }*/}
-      <HistoryRouter history={browserHistory}>
-        <Routes>
+    <HistoryRouter history={browserHistory}>
+      <Routes>
+        <Route
+          path="/"
+          element={<MainPage />}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
+        <Route
+          path="/mylist"
+          element={
+            <PrivateRoute isAuth={authorizationStatus}>
+              <MyListPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/player/:id">
           <Route
-            path="/"
-            element={<MainPage />}
+            path={':id'}
+            element={<PlayerPage />}
           />
+        </Route>
+        <Route path="/films/">
           <Route
-            path="/login"
-            element={<LoginPage />}
-          />
+            path={':id'}
+            element={<FilmPage />}
+          >
+          </Route>
           <Route
-            path="/mylist"
+            path='/films/:id/review'
             element={
               <PrivateRoute isAuth={authorizationStatus}>
-                <MyListPage />
+                <AddReviewPage />
               </PrivateRoute>
             }
-          />
-          <Route path="/player/:id">
-            <Route
-              path={':id'}
-              element={<PlayerPage />}
-            />
+          >
           </Route>
-          <Route path="/films/">
-            <Route
-              path={':id'}
-              element={<FilmPage />}
-            >
-            </Route>
-            <Route
-              path='/films/:id/review'
-              element={
-                <PrivateRoute isAuth={authorizationStatus}>
-                  <AddReviewPage />
-                </PrivateRoute>
-              }
-            >
-            </Route>
-          </Route>
-          <Route
-            path={'*'}
-            element={<UnknownPage />}
-          />
-        </Routes>
-      </HistoryRouter>
-    </>
+        </Route>
+        <Route
+          path={'*'}
+          element={<UnknownPage />}
+        />
+      </Routes>
+    </HistoryRouter>
   );
 }
-
-export default App;

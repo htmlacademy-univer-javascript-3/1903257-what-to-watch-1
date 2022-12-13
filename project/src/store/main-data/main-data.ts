@@ -12,10 +12,11 @@ const initialState: MainData = {
   currentGenre: DEFAULT_GENRE,
   filteredFilms: [],
   cardCount: 0,
-  favoriteFilms: []
+  favoriteFilms: [],
+  favoriteCount: 0
 };
 
-export const mainData = createSlice({
+export const mainDataSlice = createSlice({
   name: NameSpace.MainPage,
   initialState,
   reducers: {
@@ -44,6 +45,12 @@ export const mainData = createSlice({
       state.cardCount = state.filteredFilms.length < 8 ?
         state.filteredFilms.length :
         8;
+    },
+    setIsDataLoaded: (state, action) => {
+      state.isDataLoaded = action.payload;
+    },
+    setFavoriteFilmsCount: (state, action) => {
+      state.favoriteCount = action.payload;
     }
   },
   extraReducers(builder) {
@@ -67,6 +74,7 @@ export const mainData = createSlice({
       })
       .addCase(fetchFavoriteFilmsAction.fulfilled, (state, action) => {
         state.favoriteFilms = action.payload;
+        state.favoriteCount = action.payload.length;
         state.isDataLoaded = false;
       });
   }
@@ -76,7 +84,9 @@ export const {
   resetMainScreen,
   changeGenre,
   increaseCardCount,
-  resetCardCount
-} = mainData.actions;
+  resetCardCount,
+  setIsDataLoaded,
+  setFavoriteFilmsCount
+} = mainDataSlice.actions;
 
-export default mainData.reducer;
+export default mainDataSlice.reducer;

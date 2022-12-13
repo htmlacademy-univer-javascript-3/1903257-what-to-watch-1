@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import { NameSpace} from '../../const';
 import { FilmData } from '../../types/film-data';
-import { fetchCommentsByID, fetchFilmByID, fetchRecommendedByID } from '../api-action';
+import { fetchCommentsByID, fetchFilmByID, fetchRecommendedByID, changeFilmStatus } from '../api-action';
 
 const initialState: FilmData = {
   film: null,
@@ -11,7 +11,7 @@ const initialState: FilmData = {
   isFilmFoundStatus: null
 };
 
-export const filmData = createSlice({
+export const filmDataSlice = createSlice({
   name: NameSpace.FilmPage,
   initialState,
   reducers: {
@@ -36,8 +36,11 @@ export const filmData = createSlice({
       })
       .addCase(fetchCommentsByID.fulfilled, (state, action) => {
         state.comments = action.payload;
+      })
+      .addCase(changeFilmStatus.fulfilled, (state, action) => {
+        state.film = action.payload;
       });
   }
 });
 
-export default filmData.reducer;
+export default filmDataSlice.reducer;

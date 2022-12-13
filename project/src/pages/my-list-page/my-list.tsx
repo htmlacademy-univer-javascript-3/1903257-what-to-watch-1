@@ -1,7 +1,7 @@
 import LogoButton from '../../components/logo-button/logo-button';
 import UserBlock from '../../components/user-block/user-block';
 import RecommendedFilmCard from '../../components/recommended-film-card/recommended-film-card';
-import { useAppSelector } from '../../hooks/state';
+import { useAppSelector, useAppDispatch } from '../../hooks/state';
 import { getAuthorizationStatus } from '../../store/user-data/selectors';
 import { useEffect } from 'react';
 import { AuthorizationStatus } from '../../const';
@@ -10,6 +10,7 @@ import { getFavoriteFilms } from '../../store/main-data/selectors';
 
 
 export default function MyListPage() {
+  const dispatch = useAppDispatch();
   const favoriteFilms = useAppSelector(getFavoriteFilms);
   const authStatus = useAppSelector(getAuthorizationStatus);
   useEffect(() => {
@@ -45,7 +46,3 @@ export default function MyListPage() {
 
   );
 }
-function dispatch(arg0: any) {
-  throw new Error('Function not implemented.');
-}
-

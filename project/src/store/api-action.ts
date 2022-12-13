@@ -146,19 +146,6 @@ export const postComment = createAsyncThunk<void, UserComment, {
   },
 );
 
-export const changeStatusToView = createAsyncThunk<Film, FilmStatus, {
-  dispatch: AppDispatch,
-  state: State,
-  extra: AxiosInstance
-}>(
-  'data/changeStatusToView',
-  async ({filmId: id, status: isFavorite}, { dispatch, extra: api}) => {
-    const {data} = await api.post<Film>(`${APIRoute.Favorite}/${id}/${isFavorite}`);
-
-    return data;
-  },
-);
-
 export const fetchFavoriteFilmsAction = createAsyncThunk<FavoriteFilms, undefined, {
   dispatch: AppDispatch,
   state: State,
@@ -167,6 +154,30 @@ export const fetchFavoriteFilmsAction = createAsyncThunk<FavoriteFilms, undefine
   'data/fetchFavoriteFilmsAction',
   async (_arg, { dispatch, extra: api}) => {
     const {data} = await api.get<FavoriteFilms>(APIRoute.Favorite);
+
+    return data;
+  },
+);
+export const changeFilmStatus = createAsyncThunk<Film, FilmStatus, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/changeFilmStatus',
+  async ({filmId: id, status: isFavorite}, { dispatch, extra: api}) => {
+    const {data} = await api.post<Film>(`${APIRoute.Favorite}/${id}/${isFavorite}`);
+
+    return data;
+  },
+);
+export const changePromoStatus = createAsyncThunk<Film, FilmStatus, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/changePromoStatus',
+  async ({filmId: id, status: isFavorite}, { dispatch, extra: api}) => {
+    const {data} = await api.post<Film>(`${APIRoute.Favorite}/${id}/${isFavorite}`);
 
     return data;
   },

@@ -18,14 +18,14 @@ export default function LoginPage() {
   const onSubmit = (data: AuthData) => {
     dispatch(loginAction(data));
   };
-  const checkEmail = (email: string): boolean => {
+  const checkEmailForCorrectness = (email: string): boolean => {
     const result = /\S+@\S+\.\S+/.test(email);
     setIsInvalidEmail(!result);
 
     return result;
   };
 
-  const checkPassword = (password: string): boolean => {
+  const checkPasswordForCorrectness = (password: string): boolean => {
     const result = /(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z]{2,}/.test(password);
     setIsInvalidPassword(!result);
 
@@ -93,9 +93,9 @@ export default function LoginPage() {
                 evt.preventDefault();
 
                 if (emailRef.current !== null
-                  && checkEmail(emailRef.current?.value)
+                  && checkEmailForCorrectness(emailRef.current?.value)
                   && passRef.current !== null
-                  && checkPassword(passRef.current?.value)) {
+                  && checkPasswordForCorrectness(passRef.current?.value)) {
                   onSubmit({
                     email: emailRef.current.value,
                     password: passRef.current.value,
