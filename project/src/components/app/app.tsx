@@ -44,7 +44,7 @@ export default function App(): JSX.Element {
             </PrivateRoute>
           }
         />
-        <Route path="/player/:id">
+        <Route path="/player">
           <Route
             path={':id'}
             element={<PlayerPage />}

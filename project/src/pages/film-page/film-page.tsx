@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import FilmDescription from '../../components/film-description/film-description';
 import UserBlock from '../../components/user-block/user-block';
@@ -9,21 +9,20 @@ import { useEffect } from 'react';
 import { fetchFilmByID, fetchCommentsByID, fetchRecommendedByID, changeFilmStatus, fetchFavoriteFilmsAction } from '../../store/api-action';
 import { AuthorizationStatus } from '../../const';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { getFilm, getSimilar, getIsFilmFoundStatus, getIsFilmLoadingStatus } from '../../store/film-data/selectors';
+import { getFilm, getSimilar, getIsFilmFound, getIsFilmLoading } from '../../store/film-data/selectors';
 import { getAuthorizationStatus } from '../../store/user-data/selectors';
 import { FilmStatus } from '../../types/film-status';
-import { setFavoriteFilmsCount, setIsDataLoaded } from '../../store/main-data/main-data';
 import { getFavoriteFilmsCount } from '../../store/main-data/selectors';
 
 export default function FilmPage() {
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const id = Number(useParams().id);
   const currentFilm = useAppSelector(getFilm);
   const recommended = useAppSelector(getSimilar);
   const authStatus = useAppSelector(getAuthorizationStatus);
-  const isFilmFoundStatus = useAppSelector(getIsFilmFoundStatus);
-  const isFilmLoadedStatus = useAppSelector(getIsFilmLoadingStatus);
+  const isFilmFoundStatus = useAppSelector(getIsFilmFound);
+  const isFilmLoadedStatus = useAppSelector(getIsFilmLoading);
   const favoriteFilmsCount = useAppSelector(getFavoriteFilmsCount);
 
   const onAddFavoriteFilmClick = () => {
@@ -33,15 +32,9 @@ export default function FilmPage() {
     };
     dispatch(changeFilmStatus(status));
 
-    if (currentFilm?.isFavorite) {
-      dispatch(setFavoriteFilmsCount(favoriteFilmsCount - 1));
-    } else {
-      dispatch(setFavoriteFilmsCount(favoriteFilmsCount + 1));
-    }
   };
 
   useEffect(() => {
-    dispatch(setIsDataLoaded(true));
     dispatch(fetchFilmByID(id.toString()));
     dispatch(fetchCommentsByID(id.toString()));
     dispatch(fetchRecommendedByID(id.toString()));
@@ -49,9 +42,11 @@ export default function FilmPage() {
     if (authStatus === AuthorizationStatus.Auth) {
       dispatch(fetchFavoriteFilmsAction());
     }
-
-    dispatch(setIsDataLoaded(false));
   }, [id, dispatch, authStatus]);
+
+  const onPlayClick = () => {
+    navigate(`/player/${id}`);
+  };
 
   if (isFilmLoadedStatus) {
     return(<LoadingScreen />);
@@ -87,7 +82,7 @@ export default function FilmPage() {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button className="btn btn--play film-card__button" type="button" onClick={onPlayClick}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

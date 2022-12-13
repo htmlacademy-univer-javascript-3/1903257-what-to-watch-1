@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import { DEFAULT_GENRE, NameSpace} from '../../const';
 import { MainData } from '../../types/main-data';
 import { sortFilmsByGenre } from '../../utils/sort-films';
-import { fetchFavoriteFilmsAction, fetchFilmsAction, fetchPromoAction } from '../api-action';
+import { changeFilmStatus, changePromoStatus, fetchFavoriteFilmsAction, fetchFilmsAction, fetchPromoAction } from '../api-action';
 
 
 const initialState: MainData = {
@@ -49,9 +49,6 @@ export const mainDataSlice = createSlice({
     setIsDataLoaded: (state, action) => {
       state.isDataLoaded = action.payload;
     },
-    setFavoriteFilmsCount: (state, action) => {
-      state.favoriteCount = action.payload;
-    }
   },
   extraReducers(builder) {
     builder
@@ -76,6 +73,22 @@ export const mainDataSlice = createSlice({
         state.favoriteFilms = action.payload;
         state.favoriteCount = action.payload.length;
         state.isDataLoaded = false;
+      })
+      .addCase(changePromoStatus.fulfilled, (state, action) => {
+        state.promo = action.payload;
+
+        if (action.payload.isFavorite) {
+          state.favoriteCount = state.favoriteCount + 1;
+        } else {
+          state.favoriteCount = state.favoriteCount - 1;
+        }
+      })
+      .addCase(changeFilmStatus.fulfilled, (state, action) => {
+        if (action.payload.isFavorite) {
+          state.favoriteCount = state.favoriteCount + 1;
+        } else {
+          state.favoriteCount = state.favoriteCount - 1;
+        }
       });
   }
 });
@@ -86,7 +99,6 @@ export const {
   increaseCardCount,
   resetCardCount,
   setIsDataLoaded,
-  setFavoriteFilmsCount
 } = mainDataSlice.actions;
 
 export default mainDataSlice.reducer;

@@ -6,7 +6,6 @@ import { getAuthorizationStatus } from '../../store/user-data/selectors';
 import { FilmStatus } from '../../types/film-status';
 import { AuthorizationStatus } from '../../const';
 import { changePromoStatus, fetchPromoAction } from '../../store/api-action';
-import { setFavoriteFilmsCount } from '../../store/main-data/main-data';
 import { useEffect } from 'react';
 
 export default function PromoMovieCard(): JSX.Element {
@@ -27,11 +26,7 @@ export default function PromoMovieCard(): JSX.Element {
 
     dispatch(changePromoStatus(filmStatus));
 
-    if (promo?.isFavorite) {
-      dispatch(setFavoriteFilmsCount(favoriteFilmsCount - 1));
-    } else {
-      dispatch(setFavoriteFilmsCount(favoriteFilmsCount + 1));
-    }
+
   };
   if (!promo) {
     return <section className="film-card"></section>;

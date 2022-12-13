@@ -7,6 +7,6 @@ export type FilmData = {
     film: Film | null,
     similar: Recommended,
     comments: Comments,
-    isFilmFoundStatus: boolean | null,
-    isFilmLoadingStatus: boolean | null
+    isFilmFound: boolean | null,
+    isFilmLoading: boolean | null
   }
