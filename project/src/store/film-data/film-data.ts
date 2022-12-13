@@ -2,13 +2,14 @@ import {createSlice} from '@reduxjs/toolkit';
 import { NameSpace} from '../../const';
 import { FilmData } from '../../types/film-data';
 import { fetchCommentsByID, fetchFilmByID, fetchRecommendedByID, changeFilmStatus } from '../api-action';
+import { filterRecommendedList } from '../../utils/filter-recommended';
 
 const initialState: FilmData = {
   film: null,
   similar: [],
   comments: [],
-  isFilmLoadingStatus: null,
-  isFilmFoundStatus: null
+  isFilmLoading: null,
+  isFilmFound: null
 };
 
 export const filmDataSlice = createSlice({
@@ -19,20 +20,20 @@ export const filmDataSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchFilmByID.pending, (state) => {
-        state.isFilmLoadingStatus = true;
+        state.isFilmLoading = true;
       })
       .addCase(fetchFilmByID.fulfilled, (state, action) => {
         state.film = action.payload;
 
-        state.isFilmFoundStatus = true;
-        state.isFilmLoadingStatus = false;
+        state.isFilmFound = true;
+        state.isFilmLoading = false;
       })
       .addCase(fetchFilmByID.rejected, (state, action) => {
-        state.isFilmFoundStatus = false;
-        state.isFilmLoadingStatus = false;
+        state.isFilmFound = false;
+        state.isFilmLoading = false;
       })
       .addCase(fetchRecommendedByID.fulfilled, (state, action) => {
-        state.similar = action.payload;
+        state.similar = filterRecommendedList(action.payload, state.film?.id);
       })
       .addCase(fetchCommentsByID.fulfilled, (state, action) => {
         state.comments = action.payload;
