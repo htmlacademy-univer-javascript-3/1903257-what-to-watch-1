@@ -18,7 +18,7 @@ export default function PromoMovieCard(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchPromoAction());
-  }, [dispatch, promo]);
+  }, [dispatch, promo, favoriteFilmsCount]);
   const onAddFavoriteFilmClick = () => {
     const filmStatus: FilmStatus = {
       filmId: promo?.id || NaN,
