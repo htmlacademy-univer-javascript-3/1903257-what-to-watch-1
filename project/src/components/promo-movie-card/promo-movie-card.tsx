@@ -7,10 +7,11 @@ import { FilmStatus } from '../../types/film-status';
 import { AuthorizationStatus } from '../../const';
 import { changePromoStatus, fetchPromoAction } from '../../store/api-action';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function PromoMovieCard(): JSX.Element {
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const promo = useAppSelector(getPromo);
   const authStatus = useAppSelector(getAuthorizationStatus);
   const favoriteFilmsCount = useAppSelector(getFavoriteFilmsCount);
@@ -60,7 +61,10 @@ export default function PromoMovieCard(): JSX.Element {
             </p>
 
             <div className="film-card__buttons">
-              <button className="btn btn--play film-card__button" type="button">
+              <button className="btn btn--play film-card__button" type="button" onClick={
+                () => navigate(`/player/${promo.id}`)
+              }
+              >
                 <svg viewBox="0 0 19 19" width="19" height="19">
                   <use xlinkHref="#play-s"></use>
                 </svg>
