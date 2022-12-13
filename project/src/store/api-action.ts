@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { dropAvatarURL } from '../components/services/avatar';
 import { dropToken } from '../components/services/token';
-import { APIRoute, TIMEOUT_SHOW_ERROR } from '../const';
+import { APIRoute} from '../const';
 import { AuthData } from '../types/auth-data';
 import { Comments } from '../types/comments';
 import { FavoriteFilms } from '../types/favourite-film';
@@ -14,22 +14,8 @@ import { AppDispatch, State } from '../types/store';
 import { UserComment } from '../types/user-comment';
 import { UserData } from '../types/user-data';
 import { redirectToRoute } from './action';
-import { setError } from './app-data/app-data';
 import { FilmStatus } from '../types/film-status';
 
-
-export const clearErrorAction = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch,
-  state: State,
-}>(
-  'app/clearError',
-  async (_arg, { dispatch }) => {
-    setTimeout(
-      () => dispatch(setError(null)),
-      TIMEOUT_SHOW_ERROR
-    );
-  },
-);
 
 export const fetchFilmsAction = createAsyncThunk<Films, undefined, {
   dispatch: AppDispatch,
