@@ -7,44 +7,70 @@ import FilmPage from '../../pages/film-page/film-page';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
 import PlayerPage from '../../pages/player-page/player-page';
 import PrivateRoute from '../private-route/private-route';
-import { FavoriteFilms } from '../../types/favourite-film';
 import { useAppSelector } from '../../hooks/state';
 import { isCheckedAuth } from '../../utils/check-auth';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
-
-type AppProps = {
-  MainMovie: {
-    title: string,
-    genre: string,
-    releaseDate: number
-  },
-  FavoriteFilms: FavoriteFilms,
-}
+import { getAuthorizationStatus } from '../../store/user-data/selectors';
 
 
-function App(MainMovieProps: AppProps): JSX.Element {
-  const { authorizationStatus, isDataLoaded } = useAppSelector((state) => state);
+export default function App(): JSX.Element {
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-  if (isCheckedAuth(authorizationStatus) || isDataLoaded) {
+
+  if (isCheckedAuth(authorizationStatus)) {
     return (
       <LoadingScreen />
     );
   }
+
   return (
     <HistoryRouter history={browserHistory}>
       <Routes>
-        <Route path='/' element={<MainPage movie={MainMovieProps.MainMovie}/>}></Route>
-        <Route path='/login' element={<LoginPage></LoginPage>}></Route>
-        <Route path='/mylist' element={<PrivateRoute isAuth={authorizationStatus}><MyListPage favoriteFilms={MainMovieProps.FavoriteFilms}/></PrivateRoute>}></Route>
-        <Route path='/films/:id' element={<FilmPage></FilmPage>}></Route>
-        <Route path='/films/:id/review' element={<AddReviewPage></AddReviewPage>}></Route>
-        <Route path='/player/:id' element={<PlayerPage></PlayerPage>}></Route>
-        <Route path='*' element={<UnknownPage></UnknownPage>}></Route>
+        <Route
+          path="/"
+          element={<MainPage />}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
+        <Route
+          path="/mylist"
+          element={
+            <PrivateRoute isAuth={authorizationStatus}>
+              <MyListPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/player/:id">
+          <Route
+            path={':id'}
+            element={<PlayerPage />}
+          />
+        </Route>
+        <Route path="/films/">
+          <Route
+            path={':id'}
+            element={<FilmPage />}
+          >
+          </Route>
+          <Route
+            path='/films/:id/review'
+            element={
+              <PrivateRoute isAuth={authorizationStatus}>
+                <AddReviewPage />
+              </PrivateRoute>
+            }
+          >
+          </Route>
+        </Route>
+        <Route
+          path={'*'}
+          element={<UnknownPage />}
+        />
       </Routes>
     </HistoryRouter>
   );
 }
-
-export default App;

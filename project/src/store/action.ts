@@ -1,18 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Films } from '../types/films';
-import { AuthorizationStatus } from '../const';
-import { Film } from '../types/film';
-import { Recommended } from '../types/recomended';
-import { Comments } from '../types/comments';
-export const changeGenre = createAction<{ currentGenre: string }>('main/changeGenre');
-export const increaseFilmsCount = createAction('main/increaseFilmsCount');
-export const loadFilms = createAction<Films>('main/loadFilms');
-export const requireAuthorization = createAction<AuthorizationStatus>('main/authorizationStatus');
-export const setError = createAction<string | null>('app/setError');
-export const setDataLoadedStatus = createAction<boolean>('data/setDataLoadedStatus');
+
+
 export const redirectToRoute = createAction<string>('app/redirectToRoute');
-export const setAvatar = createAction<string | null>('app/setAvatar');
-export const resetMainScreen = createAction('main/resetState');
-export const loadFilm = createAction<Film>('data/loadFilmById');
-export const loadComments = createAction<Comments>('data/loadCommentsById');
-export const loadRecommended = createAction<Recommended>('data/loadSimilarById');
+export const clearError = createAction('app/clearError');

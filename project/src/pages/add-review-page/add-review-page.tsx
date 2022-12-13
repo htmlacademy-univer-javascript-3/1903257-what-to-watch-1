@@ -3,23 +3,22 @@ import AddReview from '../../components/add-review/add-review';
 import LogoButton from '../../components/logo-button/logo-button';
 import UserBlock from '../../components/user-block/user-block';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
-import { setDataLoadedStatus } from '../../store/action';
 import { fetchFilmByID } from '../../store/api-action';
 import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
+import { getFilm } from '../../store/film-data/selectors';
+import { getLoadedDataStatus } from '../../store/main-data/selectors';
 
 export default function AddReviewPage() {
   const id = Number(useParams().id);
 
-  const film = useAppSelector((state) => state.film);
-  const loadStatus = useAppSelector((state) => state.isDataLoaded);
+  const film = useAppSelector(getFilm);
+  const loadStatus = useAppSelector(getLoadedDataStatus);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setDataLoadedStatus(true));
     dispatch(fetchFilmByID(id.toString()));
-    dispatch(setDataLoadedStatus(false));
   }, [id, dispatch]);
 
 

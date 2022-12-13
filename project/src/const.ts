@@ -19,7 +19,16 @@ export enum APIRoute {
     Login = '/login',
     Logout = '/logout',
     Similar = '/similar',
-    Comments = '/comments'
+    Comments = '/comments',
+    Promo = '/promo',
+    Favorite = '/favorite'
 }
 
 export const TIMEOUT_SHOW_ERROR = 5000;
+
+export enum NameSpace {
+    User = 'user-data',
+    MainPage = 'main-data',
+    FilmPage = 'film-data',
+    App = 'app-data'
+}

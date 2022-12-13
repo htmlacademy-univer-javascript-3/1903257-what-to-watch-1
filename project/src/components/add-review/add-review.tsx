@@ -1,37 +1,38 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import { Comment } from '../../types/comment';
 import { postComment } from '../../store/api-action';
 import { useAppDispatch } from '../../hooks/state';
+import { UserComment } from '../../types/user-comment';
 
 export default function AddReview(): JSX.Element {
   const id = Number(useParams().id);
 
   const [formData, setFormData] = useState({
-    rating: 8,
+    rating: NaN,
     reviewText: '',
   });
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabledByText, setIsDisabledByText] = useState(true);
+  const [isDisabledByRate, setIsDisabledByRate] = useState(true);
 
   const dispatch = useAppDispatch();
 
   const textareaChangeHandle = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     setFormData({...formData, reviewText: evt.target.value});
 
-    if (evt.target.value.length > 50 && evt.target.value.length < 400) {
-      setIsDisabled(false);
+    if (evt.target.value.length >= 50 && evt.target.value.length <= 400) {
+      setIsDisabledByText(false);
     } else {
-      setIsDisabled(true);
+      setIsDisabledByText(true);
     }
   };
 
   const ratingChangeHandle = (evt: ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, rating: parseInt(evt.target.value, 10)});
     if (evt.target.value) {
-      setIsDisabled(false);
+      setIsDisabledByRate(false);
     } else {
-      setIsDisabled(true);
+      setIsDisabledByRate(true);
     }
   };
 
@@ -40,7 +41,7 @@ export default function AddReview(): JSX.Element {
     onSubmit({comment: formData.reviewText, rating: formData.rating, filmId: id.toString()});
   };
 
-  const onSubmit = (commentData: Comment) => {
+  const onSubmit = (commentData: UserComment) => {
     dispatch(postComment(commentData));
   };
 
@@ -84,7 +85,7 @@ export default function AddReview(): JSX.Element {
             <button
               className="add-review__btn"
               type="submit"
-              disabled={isDisabled}
+              disabled={isDisabledByRate || isDisabledByText}
             >
               Post
             </button>

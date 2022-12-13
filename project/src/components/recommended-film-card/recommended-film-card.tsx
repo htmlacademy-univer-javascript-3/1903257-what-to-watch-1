@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/state';
-import { resetMainScreen } from '../../store/action';
+import { resetMainScreen } from '../../store/main-data/main-data';
 
 type FilmCardProps = {
     id: number,

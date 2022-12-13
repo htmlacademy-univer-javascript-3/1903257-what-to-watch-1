@@ -5,34 +5,59 @@ import UserBlock from '../../components/user-block/user-block';
 import LogoButton from '../../components/logo-button/logo-button';
 import RecommendedList from '../../components/recommended-list/recommended-list';
 import { useAppSelector, useAppDispatch } from '../../hooks/state';
-import { setDataLoadedStatus } from '../../store/action';
 import { useEffect } from 'react';
-import { fetchFilmByID, fetchCommentsByID, fetchRecommendedByID } from '../../store/api-action';
+import { fetchFilmByID, fetchCommentsByID, fetchRecommendedByID, changeFilmStatus, fetchFavoriteFilmsAction } from '../../store/api-action';
 import { AuthorizationStatus } from '../../const';
 import LoadingScreen from '../loading-screen/loading-screen';
+import { getFilm, getSimilar, getIsFilmFoundStatus, getIsFilmLoadingStatus } from '../../store/film-data/selectors';
+import { getAuthorizationStatus } from '../../store/user-data/selectors';
+import { FilmStatus } from '../../types/film-status';
+import { setFavoriteFilmsCount, setIsDataLoaded } from '../../store/main-data/main-data';
+import { getFavoriteFilmsCount } from '../../store/main-data/selectors';
 
 export default function FilmPage() {
-  const id = Number(useParams().id);
-  const currentFilm = useAppSelector((state) => state.film);
-  const comments = useAppSelector((state) => state.comments);
-  const recommended = useAppSelector((state) => state.recommended);
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const loadStatus = useAppSelector((state) => state.isDataLoaded);
   const dispatch = useAppDispatch();
 
+  const id = Number(useParams().id);
+  const currentFilm = useAppSelector(getFilm);
+  const recommended = useAppSelector(getSimilar);
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  const isFilmFoundStatus = useAppSelector(getIsFilmFoundStatus);
+  const isFilmLoadedStatus = useAppSelector(getIsFilmLoadingStatus);
+  const favoriteFilmsCount = useAppSelector(getFavoriteFilmsCount);
+
+  const onAddFavoriteFilmClick = () => {
+    const status: FilmStatus = {
+      filmId: currentFilm?.id || NaN,
+      status: currentFilm?.isFavorite ? 0 : 1
+    };
+    dispatch(changeFilmStatus(status));
+
+    if (currentFilm?.isFavorite) {
+      dispatch(setFavoriteFilmsCount(favoriteFilmsCount - 1));
+    } else {
+      dispatch(setFavoriteFilmsCount(favoriteFilmsCount + 1));
+    }
+  };
+
   useEffect(() => {
-    dispatch(setDataLoadedStatus(true));
+    dispatch(setIsDataLoaded(true));
     dispatch(fetchFilmByID(id.toString()));
     dispatch(fetchCommentsByID(id.toString()));
     dispatch(fetchRecommendedByID(id.toString()));
-    dispatch(setDataLoadedStatus(false));
-  }, [id, dispatch]);
 
-  if (loadStatus) {
+    if (authStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteFilmsAction());
+    }
+
+    dispatch(setIsDataLoaded(false));
+  }, [id, dispatch, authStatus]);
+
+  if (isFilmLoadedStatus) {
     return(<LoadingScreen />);
   }
 
-  if (!currentFilm) {
+  if (!isFilmFoundStatus) {
     return (
       <div>Фильм не найден</div>
     );
@@ -68,15 +93,32 @@ export default function FilmPage() {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">9</span>
-                </button>
-                { authStatus === AuthorizationStatus.Auth &&
-                  <Link to={`/films/${id}/review`} className="btn film-card__button">Add review</Link>}
+                {
+                  authStatus === AuthorizationStatus.Auth &&
+                  <button
+                    className="btn btn--list film-card__button"
+                    type="button"
+                    onClick={onAddFavoriteFilmClick}
+                  >
+                    {
+                      currentFilm?.isFavorite ? <span>✓</span> :
+                        <svg viewBox="0 0 19 20" width="19" height="20">
+                          <use xlinkHref="#add"></use>
+                        </svg>
+                    }
+                    <span>My list</span>
+                    <span className="film-card__count">{favoriteFilmsCount}</span>
+                  </button>
+                }
+                {
+                  authStatus === AuthorizationStatus.Auth &&
+                  <Link
+                    to={`/films/${id}/review`}
+                    className="btn film-card__button"
+                  >
+                    Add review
+                  </Link>
+                }
               </div>
             </div>
           </div>
@@ -89,10 +131,7 @@ export default function FilmPage() {
             </div>
 
             <div className="film-card__desc">
-              <FilmDescription
-                currentFilm={currentFilm}
-                reviews={comments}
-              />
+              <FilmDescription />
             </div>
           </div>
         </div>
