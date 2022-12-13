@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import { NameSpace} from '../../const';
 import { FilmData } from '../../types/film-data';
 import { fetchCommentsByID, fetchFilmByID, fetchRecommendedByID, changeFilmStatus } from '../api-action';
+import { filterRecommendedList } from '../../utils/filter-recommended';
 
 const initialState: FilmData = {
   film: null,
@@ -32,7 +33,7 @@ export const filmDataSlice = createSlice({
         state.isFilmLoading = false;
       })
       .addCase(fetchRecommendedByID.fulfilled, (state, action) => {
-        state.similar = action.payload;
+        state.similar = filterRecommendedList(action.payload, state.film?.id);
       })
       .addCase(fetchCommentsByID.fulfilled, (state, action) => {
         state.comments = action.payload;
